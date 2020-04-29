@@ -1,5 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
+#!!!! --- Debug/Release for debugging
+
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1-buster-slim AS base
 WORKDIR /app
 
@@ -9,10 +11,10 @@ COPY ["ActionHandlers/NotificationSender/NotificationSender.csproj", "ActionHand
 RUN dotnet restore "ActionHandlers/NotificationSender/NotificationSender.csproj"
 COPY . .
 WORKDIR "/src/ActionHandlers/NotificationSender"
-RUN dotnet build "NotificationSender.csproj" -c Release -o /app/build
+RUN dotnet build "NotificationSender.csproj" -c Debug -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "NotificationSender.csproj" -c Release -o /app/publish
+RUN dotnet publish "NotificationSender.csproj" -c Debug -o /app/publish
 
 FROM base AS final
 WORKDIR /app
